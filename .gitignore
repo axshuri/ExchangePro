@@ -2,6 +2,10 @@
 config/config.local.php
 config/installed.lock
 
+# Auto-installed portable PHP / MySQL runtime (created by start.bat when
+# no PHP or Laragon is found on the machine)
+runtime/
+
 # Runtime data
 storage/backups/*
 storage/logs/*
@@ -16,4 +20,5 @@ Thumbs.db
 *.log
 /.agents
 prompt.txt
+prompt1.txt
 skills-lock.json

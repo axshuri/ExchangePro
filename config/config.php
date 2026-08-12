@@ -70,6 +70,10 @@ return [
         'max_change_percent' => '10',                     // reject auto-apply above this % change
         'retry_attempts'     => 3,                        // retries for manual/cron syncs (login uses 1)
         'retry_delays'       => [2, 5, 15],               // seconds between retries
+        // XE.com Currency Data credentials (only needed when provider = 'xe').
+        // Get an account ID + API key from a paid XE subscription (xe.com/xecurrencydata).
+        'xe_account_id'      => getenv('EXCHANGE_RATE_XE_ACCOUNT_ID') ?: '',
+        'xe_api_key'         => getenv('EXCHANGE_RATE_XE_API_KEY') ?: '',
         // Default Buy/Sell spread applied to the reference rate when a currency
         // has no per-currency spread configured. Percent scales with rate size.
         // Buy value is negative (below reference), sell positive (above).

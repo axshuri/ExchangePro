@@ -11,6 +11,10 @@ $statePill = match ($st['state']) {
 $intervals = [900 => t('rates.interval.15m'), 1800 => t('rates.interval.30m'), 3600 => t('rates.interval.1h'),
     21600 => t('rates.interval.6h'), 43200 => t('rates.interval.12h'), 86400 => t('rates.interval.24h')];
 $bases = ['EUR', 'USD', 'GBP', 'CHF', 'JPY', 'CNY', 'CAD', 'AUD'];
+$providerDesc = '';
+foreach ($providers as $p) {
+    if ($p['id'] === $settings['provider']) { $providerDesc = $p['desc'] ?? ''; break; }
+}
 ?>
 <div class="page-head">
     <h1><?= t('rates.title') ?></h1>
@@ -98,12 +102,29 @@ $bases = ['EUR', 'USD', 'GBP', 'CHF', 'JPY', 'CNY', 'CAD', 'AUD'];
                     <label class="form-label" for="rs_provider"><?= t('rates.provider_label') ?></label>
                     <select class="form-select" id="rs_provider" name="provider">
                         <?php foreach ($providers as $p): ?>
-                            <option value="<?= e($p['id']) ?>" <?= $settings['provider'] === $p['id'] ? 'selected' : '' ?>>
+                            <option value="<?= e($p['id']) ?>" <?= $settings['provider'] === $p['id'] ? 'selected' : '' ?>
+                                    data-desc="<?= e($p['desc'] ?? '') ?>">
                                 <?= e($p['name']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    <p class="form-hint" id="rs_provider_desc" style="margin:0"><?= e($providerDesc) ?></p>
                 </div>
+                <!-- XE.com credentials — only shown while the XE provider is selected -->
+                <div class="form-group xe-fields" <?= $settings['provider'] === 'xe' ? '' : 'hidden' ?>>
+                    <label class="form-label" for="rs_xe_account"><?= t('rates.xe_account_id') ?></label>
+                    <input class="form-control" type="text" id="rs_xe_account" name="xe_account_id"
+                           autocomplete="off" value="<?= e((string)$settings['xe_account_id']) ?>">
+                </div>
+                <div class="form-group xe-fields" <?= $settings['provider'] === 'xe' ? '' : 'hidden' ?>>
+                    <label class="form-label" for="rs_xe_key"><?= t('rates.xe_api_key') ?></label>
+                    <input class="form-control" type="password" id="rs_xe_key" name="xe_api_key"
+                           autocomplete="new-password"
+                           placeholder="<?= $settings['xe_api_key_set'] ? t('rates.xe_key_keep') : '' ?>">
+                </div>
+                <p class="form-hint xe-fields" style="grid-column:1/-1" <?= $settings['provider'] === 'xe' ? '' : 'hidden' ?>>
+                    <?= t('rates.xe_credentials_hint') ?>
+                </p>
                 <div class="form-group">
                     <label class="form-label" for="rs_base"><?= t('rates.base_currency') ?></label>
                     <select class="form-select" id="rs_base" name="base_currency">

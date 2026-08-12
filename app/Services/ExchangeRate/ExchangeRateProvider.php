@@ -5,8 +5,9 @@ declare(strict_types=1);
  * Exchange-rate provider abstraction.
  *
  * The application only talks to this interface — concrete providers
- * (Frankfurter today, others later) implement it, so a provider can be
- * swapped without touching application logic.
+ * (Frankfurter, XE.com, Bank of Canada, fawazahmed0 today — others later)
+ * implement it, so a provider can be swapped without touching application
+ * logic.
  */
 interface ExchangeRateProvider
 {

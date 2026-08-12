@@ -557,6 +557,29 @@
     });
   }
 
+  /* ---------------- Rate provider conditional fields (XE credentials) ---------------- */
+  var providerSel = document.getElementById('rs_provider');
+  var providerDesc = document.getElementById('rs_provider_desc');
+  if (providerSel) {
+    function toggleProviderFields() {
+      var showXe = providerSel.value === 'xe';
+      document.querySelectorAll('.xe-fields').forEach(function (el) {
+        el.hidden = !showXe;
+      });
+    }
+    function updateProviderDesc() {
+      if (!providerDesc) return;
+      var opt = providerSel.querySelector('option:checked');
+      providerDesc.textContent = opt ? (opt.getAttribute('data-desc') || '') : '';
+    }
+    providerSel.addEventListener('change', function () {
+      toggleProviderFields();
+      updateProviderDesc();
+    });
+    toggleProviderFields();
+    updateProviderDesc();
+  }
+
   /* ---------------- Print receipt ---------------- */
   var printBtn = document.getElementById('printReceipt');
   if (printBtn) printBtn.addEventListener('click', function () { window.print(); });

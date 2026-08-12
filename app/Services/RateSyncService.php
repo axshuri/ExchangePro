@@ -25,6 +25,9 @@ final class RateSyncService
     {
         return [
             ['id' => 'frankfurter', 'name' => 'Frankfurter / ECB', 'desc' => 'ECB reference rates, no API key required'],
+            ['id' => 'xe', 'name' => 'XE.com Currency Data', 'desc' => 'Live market rates — requires an XE API key (paid subscription)'],
+            ['id' => 'bankofcanada', 'name' => 'Bank of Canada', 'desc' => 'Official daily reference rates for 27 major currencies (CAD-based, cross-rated automatically) — no API key required'],
+            ['id' => 'fawazahmed', 'name' => 'Free Exchange Rates (fawazahmed0)', 'desc' => 'Free open rates for 200+ currencies, no API key required'],
         ];
     }
 
@@ -78,6 +81,13 @@ final class RateSyncService
         $id ??= self::providerId();
         return match ($id) {
             'frankfurter' => new FrankfurterProvider(self::apiTimeout()),
+            'xe' => new XeProvider(
+                (string)self::cfg('xe_account_id', ''),
+                (string)self::cfg('xe_api_key', ''),
+                self::apiTimeout()
+            ),
+            'bankofcanada' => new BankOfCanadaProvider(self::apiTimeout()),
+            'fawazahmed' => new FawazahmedProvider(self::apiTimeout()),
             default => throw new DomainException('Unknown rate provider: ' . $id),
         };
     }
@@ -507,6 +517,9 @@ final class RateSyncService
             'buy_spread_value' => (string)self::cfg('buy_spread_value', '-0.5'),
             'sell_spread_type' => (string)self::cfg('sell_spread_type', 'percent'),
             'sell_spread_value' => (string)self::cfg('sell_spread_value', '0.5'),
+            // XE.com credentials (only the account ID is echoed back; the API key is write-only).
+            'xe_account_id' => (string)self::cfg('xe_account_id', ''),
+            'xe_api_key_set' => (string)self::cfg('xe_api_key', '') !== '',
         ];
     }
 
@@ -523,6 +536,15 @@ final class RateSyncService
             throw new DomainException('Unknown rate provider.');
         }
         $updates['rate_sync_provider'] = $provider;
+
+        // XE.com credentials: the API key is write-only — a blank field keeps
+        // the previously stored key so it is never re-sent to the browser.
+        if (array_key_exists('xe_account_id', $d)) {
+            $updates['rate_sync_xe_account_id'] = trim((string)$d['xe_account_id']);
+        }
+        if (array_key_exists('xe_api_key', $d) && trim((string)$d['xe_api_key']) !== '') {
+            $updates['rate_sync_xe_api_key'] = trim((string)$d['xe_api_key']);
+        }
 
         $baseCur = strtoupper(trim((string)($d['base_currency'] ?? 'EUR')));
         if (!preg_match('/^[A-Z]{3}$/', $baseCur)) {
@@ -558,7 +580,15 @@ final class RateSyncService
         foreach ($updates as $k => $v) {
             SettingService::set($k, $v);
         }
-        AuditService::log('rate_sync_settings', 'settings', null, $before, $updates,
+
+        // Never write the XE API key (a credential) into the audit trail —
+        // redact it from both the before/after snapshots.
+        $auditBefore = $before;
+        $auditUpdates = $updates;
+        foreach (['rate_sync_xe_api_key'] as $secret) {
+            unset($auditBefore[$secret], $auditUpdates[$secret]);
+        }
+        AuditService::log('rate_sync_settings', 'settings', null, $auditBefore, $auditUpdates,
             'Rate synchronization settings changed');
     }
 

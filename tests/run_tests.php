@@ -650,6 +650,179 @@ test('Rate sync: duplicate sync prevented while another is running (advisory loc
 });
 
 // ==========================================================================
+// 9b. XE.COM PROVIDER
+// ==========================================================================
+echo "\n9b) XE.com Currency Data provider\n";
+
+test('XE provider parses convert_from payload (mid values + timestamp)', function () {
+    $raw = [
+        'from' => 'USD', 'amount' => 1, 'timestamp' => '2026-08-11T14:30:00Z',
+        'to' => [
+            ['quotecurrency' => 'EUR', 'mid' => 0.925412],
+            ['quotecurrency' => 'GBP', 'mid' => 0.78412],
+            ['quotecurrency' => 'CAD', 'mid' => 1.3542],
+            ['quotecurrency' => 'USD', 'mid' => 1.0],
+        ],
+    ];
+    $res = XeProvider::parseRates('USD', $raw);
+    assertTrue($res->base === 'USD', 'base currency from payload');
+    assertTrue($res->date === '2026-08-11', 'date taken from ISO timestamp');
+    assertMoney('0.925412', $res->rates['EUR'], 'EUR mid');
+    assertMoney('0.78412', $res->rates['GBP'], 'GBP mid');
+    assertMoney('1.3542', $res->rates['CAD'], 'CAD mid');
+    assertTrue(count($res->rates) === 4, 'all quotes parsed');
+});
+
+test('XE provider rejects a payload without the rates list', function () {
+    $threw = false;
+    try {
+        XeProvider::parseRates('USD', ['from' => 'USD', 'timestamp' => '2026-08-11T00:00:00Z']);
+    } catch (RuntimeException $e) {
+        $threw = true;
+    }
+    assertTrue($threw, 'missing to payload rejected');
+});
+
+test('XE provider without credentials fails with a clear message', function () {
+    $p = new XeProvider('', '');
+    $threw = false;
+    try {
+        $p->latestRates('USD');
+    } catch (RuntimeException $e) {
+        $threw = str_contains($e->getMessage(), 'requires an account ID and API key');
+    }
+    assertTrue($threw, 'missing credentials rejected with a helpful message');
+});
+
+test('Rate sync settings persist XE credentials; blank key keeps the stored one', function () {
+    RateSyncService::saveSettings([
+        'enabled' => '1', 'provider' => 'xe', 'base_currency' => 'USD',
+        'cache_ttl' => '3600', 'max_change_percent' => '10',
+        'buy_spread_type' => 'percent', 'buy_spread_value' => '-0.5',
+        'sell_spread_type' => 'percent', 'sell_spread_value' => '0.5',
+        'xe_account_id' => 'acc123', 'xe_api_key' => 'key-secret',
+    ]);
+    $s = RateSyncService::settings();
+    assertTrue($s['provider'] === 'xe', 'provider saved');
+    assertTrue($s['xe_account_id'] === 'acc123', 'account id saved');
+    assertTrue($s['xe_api_key_set'] === true, 'api key set flag on');
+
+    // The API key is a credential — it must never be persisted in the audit trail.
+    $leaked = (int)Database::value(
+        "SELECT COUNT(*) FROM audit_logs WHERE action = 'rate_sync_settings'
+         AND (previous_value LIKE '%key-secret%' OR new_value LIKE '%key-secret%')");
+    assertTrue($leaked === 0, 'API key is redacted from the audit log');
+
+    // Blank key field must NOT wipe the stored key.
+    RateSyncService::saveSettings([
+        'enabled' => '1', 'provider' => 'xe', 'base_currency' => 'USD',
+        'cache_ttl' => '3600', 'max_change_percent' => '10',
+        'buy_spread_type' => 'percent', 'buy_spread_value' => '-0.5',
+        'sell_spread_type' => 'percent', 'sell_spread_value' => '0.5',
+        'xe_account_id' => 'acc123', 'xe_api_key' => '   ',
+    ]);
+    assertTrue(RateSyncService::settings()['xe_api_key_set'] === true, 'blank key keeps stored key');
+
+    // Restore the default provider so later tests are unaffected.
+    RateSyncService::saveSettings([
+        'enabled' => '1', 'provider' => 'frankfurter', 'base_currency' => 'EUR',
+        'cache_ttl' => '3600', 'max_change_percent' => '10',
+        'buy_spread_type' => 'percent', 'buy_spread_value' => '-0.5',
+        'sell_spread_type' => 'percent', 'sell_spread_value' => '0.5',
+    ]);
+});
+
+// ==========================================================================
+// 9c. BANK OF CANADA PROVIDER
+// ==========================================================================
+echo "\n9c) Bank of Canada provider\n";
+
+test('Bank of Canada provider parses observations (CAD-based, latest wins)', function () {
+    $raw = [
+        'observations' => [
+            // A discontinued series keeps its last published value in an
+            // older observation bucket (exactly what ?recent=1 returns).
+            ['d' => '2019-12-31', 'FXCADVND' => ['v' => '18000']],
+            ['d' => '2026-04-30', 'FXCADRUB' => ['v' => '82.5'], 'FXCADSAR' => ['v' => '2.95']],
+            ['d' => '2026-08-11', 'FXCADUSD' => ['v' => '0.7180'], 'FXCADEUR' => ['v' => '0.6222'], 'FXCADGBP' => ['v' => '0.5317']],
+        ],
+    ];
+    $res = BankOfCanadaProvider::parseRates($raw);
+    assertTrue($res->base === 'CAD', 'response is CAD-based');
+    assertTrue($res->date === '2026-08-11', 'newest published date used');
+    assertMoney('0.7180', $res->rates['USD'], 'USD per CAD');
+    assertMoney('0.6222', $res->rates['EUR'], 'EUR per CAD');
+    assertMoney('0.5317', $res->rates['GBP'], 'GBP per CAD');
+    assertMoney('18000', $res->rates['VND'], 'discontinued VND keeps its last value');
+    assertMoney('82.5', $res->rates['RUB'], 'RUB keeps its last value');
+    assertTrue(!isset($res->rates['CAD']), 'no self-rate for CAD');
+});
+
+test('Bank of Canada provider rejects a payload without observations', function () {
+    $threw = false;
+    try {
+        BankOfCanadaProvider::parseRates(['terms' => []]);
+    } catch (RuntimeException $e) {
+        $threw = true;
+    }
+    assertTrue($threw, 'empty observations rejected');
+});
+
+test('Bank of Canada provider is registered and constructible', function () {
+    $ids = array_column(RateSyncService::availableProviders(), 'id');
+    assertTrue(in_array('bankofcanada', $ids, true), 'provider listed in availableProviders');
+    $p = RateSyncService::provider('bankofcanada');
+    assertTrue($p instanceof BankOfCanadaProvider, 'factory returns the provider');
+    assertTrue($p->identifier() === 'bankofcanada', 'stable identifier');
+    assertTrue(count($p->supportedCurrencies()) >= 25, 'supports the official FX list');
+});
+
+// ==========================================================================
+// 9d. FAWAZAHMED0 FREE EXCHANGE RATES PROVIDER
+// ==========================================================================
+echo "\n9d) Free Exchange Rates (fawazahmed0) provider\n";
+
+test('Fawazahmed provider parses payload (3-letter codes only, symbols dropped)', function () {
+    $raw = [
+        'date' => '2026-08-12',
+        'usd' => [
+            'aed' => '3.6725', 'eur' => '0.86682707', 'gbp' => '0.74055252',
+            'jpy' => '159.42310744', 'usd' => '1',
+            'btc' => 0.00001568967, '1inch' => 11.970677, 'ada' => 5.34588557,
+        ],
+    ];
+    $res = FawazahmedProvider::parseRates('USD', $raw);
+    assertTrue($res->base === 'USD', 'base uppercased');
+    assertTrue($res->date === '2026-08-12', 'date kept');
+    assertMoney('3.6725', $res->rates['AED'], 'AED per USD');
+    assertMoney('0.86682707', $res->rates['EUR'], 'EUR per USD');
+    assertMoney('1', $res->rates['USD'], 'base self-rate');
+    // The pipeline validates /^[A-Z]{3}$/, so 3-letter codes (btc/ada included)
+    // pass the syntactic filter and 1inch-style symbols are dropped. Crypto
+    // entries are inert downstream: apply() only stores configured currencies.
+    assertTrue(!isset($res->rates['1INCH']), 'non-3-letter symbols excluded');
+    assertTrue(isset($res->rates['BTC']), '3-letter codes pass the syntactic filter');
+});
+
+test('Fawazahmed provider rejects a payload without the requested base', function () {
+    $threw = false;
+    try {
+        FawazahmedProvider::parseRates('EUR', ['date' => '2026-08-12', 'usd' => ['aed' => '3.6725']]);
+    } catch (RuntimeException $e) {
+        $threw = true;
+    }
+    assertTrue($threw, 'missing base key rejected');
+});
+
+test('Fawazahmed provider is registered and constructible', function () {
+    $ids = array_column(RateSyncService::availableProviders(), 'id');
+    assertTrue(in_array('fawazahmed', $ids, true), 'provider listed in availableProviders');
+    $p = RateSyncService::provider('fawazahmed');
+    assertTrue($p instanceof FawazahmedProvider, 'factory returns the provider');
+    assertTrue($p->identifier() === 'fawazahmed', 'stable identifier');
+});
+
+// ==========================================================================
 // 14. PERCENT FEE / DISCOUNT
 // ==========================================================================
 echo "\n14) SELL 1,000 USD @ 1.38 with 1% fee + 0.5% discount\n";

@@ -34,6 +34,9 @@ $envOverrides = [
     'EXCHANGE_RATE_API_TIMEOUT' => ['rate_sync', 'api_timeout'],
     'EXCHANGE_RATE_CACHE_TTL' => ['rate_sync', 'cache_ttl'],
     'EXCHANGE_RATE_AUTO_SYNC' => ['rate_sync', 'enabled'],
+    // XE.com provider credentials (ops-level; the Settings UI values win)
+    'EXCHANGE_RATE_XE_ACCOUNT_ID' => ['rate_sync', 'xe_account_id'],
+    'EXCHANGE_RATE_XE_API_KEY' => ['rate_sync', 'xe_api_key'],
 ];
 foreach ($envOverrides as $envKey => [$group, $key]) {
     $envValue = getenv($envKey);
