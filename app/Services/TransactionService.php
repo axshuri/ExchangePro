@@ -155,7 +155,9 @@ final class TransactionService
             self::requireAccount($destAccount);
 
             $costing = InventoryService::costing($currency['id']);
-            if (Money::compare((string)$costing['qty'], $foreignAmount) < 0) {
+            // allow_short is used by bulk XLSX imports of historical registers where
+            // a sell may legitimately precede any recorded buy of that currency.
+            if (empty($d['allow_short']) && Money::compare((string)$costing['qty'], $foreignAmount) < 0) {
                 throw new DomainException(t('tx.insufficient') . ' ' . $currency['code']
                     . ' (' . t('tx.available') . ': ' . Money::format((string)$costing['qty'], 2) . ')');
             }
@@ -163,6 +165,10 @@ final class TransactionService
             // Cost basis + realized P/L are computed BEFORE the row is stored so they
             // are persisted on the transaction itself (per-currency profit analytics).
             $costBase = Money::round(Money::mul($foreignAmount, (string)$costing['avg_cost']), 10);
+            // A negative cost basis (inventory already oversold via allow_short) has
+            // no meaningful cost — treat it as zero so the journal stays balanced and
+            // the sale books its full proceeds as realized profit.
+            if (Money::isNegative($costBase)) $costBase = Money::zero();
             $realized = Money::round(Money::sub($baseAmount, $costBase), 10);
 
             $txId = self::createTx([

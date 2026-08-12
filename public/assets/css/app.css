@@ -212,7 +212,7 @@ input, select, textarea { font-family: inherit; font-size: .92rem; color: var(--
   position: sticky; top: 0; z-index: 40;
 }
 .topbar-title { min-width: 0; }
-.topbar-title h1 {
+.topbar-title .topbar-title-text {
   font-size: 1.12rem; font-weight: 700; letter-spacing: -.01em;
   text-wrap: balance;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -323,6 +323,17 @@ a.chip:hover { background: color-mix(in srgb, var(--primary) 12%, white); }
   transition: opacity .15s, background .15s;
 }
 .flash-close:hover { opacity: 1; background: color-mix(in srgb, currentColor 10%, transparent); }
+
+/* [hidden] must always win over any class-driven display (e.g. .form-field-error) */
+[hidden] { display: none !important; }
+
+/* Visually hidden — screen-reader only */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%);
+  white-space: nowrap; border: 0;
+}
 
 /* Content */
 .content {
@@ -780,6 +791,9 @@ table.table { width: 100%; border-collapse: collapse; font-size: .85rem; }
   background: var(--surface); border-radius: var(--radius);
   max-width: 520px; width: 100%; box-shadow: var(--shadow-lg);
   border: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  max-height: min(720px, calc(100dvh - 40px));
+  overflow: hidden;
   animation: modal-in .22s var(--ease);
 }
 @keyframes modal-in { from { opacity: 0; transform: translateY(12px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -788,7 +802,7 @@ table.table { width: 100%; border-collapse: collapse; font-size: .85rem; }
 .modal-head { padding: 17px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; }
 .modal-head h3 { font-size: 1rem; }
 .modal-head button { margin-inline-start: auto; }
-.modal-body { padding: 20px; }
+.modal-body { padding: 20px; overflow-y: auto; }
 .modal-foot { padding: 14px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
 
 /* Customer picker (search + add modal) */

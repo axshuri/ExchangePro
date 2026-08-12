@@ -14,7 +14,7 @@ if ($pending) Session::remove('large_pending');
     <div class="card">
         <div class="card-header"><h2><?= t('tx.new_buy') ?></h2></div>
         <div class="card-body">
-            <form method="post" action="/transactions/buy" id="txCalculator" data-mode="buy">
+            <form method="post" action="/transactions/buy" id="txCalculator" data-mode="buy" data-submit-guard>
                 <?= Csrf::field() ?>
                 <?php if (isset($_GET['large'])): ?>
                     <div class="alert-item alert-warning mb-2">

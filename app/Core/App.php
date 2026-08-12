@@ -165,6 +165,11 @@ final class App
         // ---- Export ----
         self::route('GET', '/export/{type}', [ExportController::class, 'export']);
 
+        // ---- Data transfer (XLSX import/export) ----
+        self::route('GET', '/settings/data', [DataController::class, 'index']);
+        self::route('GET', '/settings/data/export', [DataController::class, 'exportXlsx']);
+        self::route('POST', '/settings/data/import', [DataController::class, 'import']);
+
         // ---- Notifications ----
         self::route('POST', '/notifications/read', [DashboardController::class, 'markNotificationsRead']);
     }

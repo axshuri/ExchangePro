@@ -43,22 +43,22 @@ if ($pending) Session::remove('large_pending');
                 <input type="hidden" name="currency_id" id="calcCurrencyId" value="<?= (int)$default_currency_id ?>">
                 <input type="hidden" name="large_confirmed" value="<?= isset($_GET['large']) ? '1' : '0' ?>">
 
-                <div class="quick-direction" role="tablist" aria-label="<?= t('calc.direction') ?>">
-                    <button type="button" class="quick-dir quick-buy active" data-dir="buy" role="tab" aria-selected="true">
+                <div class="quick-direction" role="group" aria-label="<?= t('calc.direction') ?>">
+                    <button type="button" class="quick-dir quick-buy active" data-dir="buy" aria-pressed="true">
                         <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-down-circle"/></svg>
                         <?= t('tx.buy') ?>
                     </button>
-                    <button type="button" class="quick-dir quick-sell" data-dir="sell" role="tab" aria-selected="false">
+                    <button type="button" class="quick-dir quick-sell" data-dir="sell" aria-pressed="false">
                         <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-up-circle"/></svg>
                         <?= t('tx.sell') ?>
                     </button>
                 </div>
 
-                <div class="calc-mode" role="tablist" aria-label="<?= t('calc.mode') ?>">
-                    <button type="button" class="calc-mode-btn active" data-mode="to_base" role="tab" aria-selected="true">
+                <div class="calc-mode" role="group" aria-label="<?= t('calc.mode') ?>">
+                    <button type="button" class="calc-mode-btn active" data-mode="to_base" aria-pressed="true">
                         <?= t('calc.mode_to_base') ?>
                     </button>
-                    <button type="button" class="calc-mode-btn" data-mode="from_base" role="tab" aria-selected="false">
+                    <button type="button" class="calc-mode-btn" data-mode="from_base" aria-pressed="false">
                         <?= t('calc.mode_from_base') ?>
                     </button>
                 </div>
@@ -192,9 +192,10 @@ if ($pending) Session::remove('large_pending');
                     <svg class="icon"><use href="/assets/img/icons.svg#percent"/></svg>
                     <?= t('calc.calculate') ?>
                 </button>
-                <button type="button" class="btn btn-success btn-lg" id="calcCreate" style="flex:1">
+                <button type="button" class="btn btn-success btn-lg" id="calcCreate" style="flex:1"
+                        data-saving="<?= t('calc.creating') ?>">
                     <svg class="icon"><use href="/assets/img/icons.svg#check-square"/></svg>
-                    <?= t('calc.create') ?>
+                    <span><?= t('calc.create') ?></span>
                 </button>
             </div>
             <p class="form-hint" style="margin:10px 2px 0;text-align:center"><?= t('calc.not_created_hint') ?></p>

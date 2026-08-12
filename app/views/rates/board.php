@@ -19,6 +19,7 @@ $isPublic = $mode === 'public';
 <link rel="stylesheet" href="/assets/css/app.css">
 </head>
 <body class="board-body">
+<h1 class="sr-only"><?= t('board.title') ?></h1>
 <div class="board-shell">
     <header class="board-head">
         <div class="board-brand">

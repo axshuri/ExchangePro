@@ -12,7 +12,7 @@ foreach ($rates as $r) { $rateMap[$r['id']] = ['buy' => (string)$r['buy_rate'], 
     <div class="card">
         <div class="card-header"><h2><?= t('tx.new_sell') ?></h2></div>
         <div class="card-body">
-            <form method="post" action="/transactions/sell" id="txCalculator" data-mode="sell">
+            <form method="post" action="/transactions/sell" id="txCalculator" data-mode="sell" data-submit-guard>
                 <?= Csrf::field() ?>
                 <?php if (isset($_GET['large'])): ?>
                     <div class="alert-item alert-warning mb-2">

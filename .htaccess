@@ -1,0 +1,28 @@
+# ExchangePro — root-level .htaccess
+# Only used when the document root is this project folder itself, e.g. when you
+# upload the whole project into cPanel's public_html. If your document root
+# points at the "public" folder (recommended), this file is never used.
+Options -Indexes
+RewriteEngine On
+
+# 1) Block direct web access to sensitive folders
+RewriteRule ^(config|database|app|tests|storage)(/|$) - [F,L]
+
+# 2) Web installer
+RewriteRule ^install(/.*)?$ public/install.php [QSA,L]
+
+# 3) Static assets live under public/
+RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+RewriteRule ^favicon\.ico$ public/favicon.ico [L]
+
+# 4) Everything else → front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/index.php [QSA,L]
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

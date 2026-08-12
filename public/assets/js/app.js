@@ -586,6 +586,15 @@
     }, 6000);
   });
 
+  /* ---------------- Double-submit guard for commit forms ---------------- */
+  // Any <form data-submit-guard> disables its submit button(s) on the first
+  // real submit, so a slow round trip can't double-book a transaction.
+  document.querySelectorAll('form[data-submit-guard]').forEach(function (f) {
+    f.addEventListener('submit', function () {
+      f.querySelectorAll('button[type=submit], input[type=submit]').forEach(function (b) { b.disabled = true; });
+    });
+  });
+
   /* ---------------- Staggered entrance for stat cards ---------------- */
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduced) {
@@ -673,7 +682,7 @@
     tabs.forEach(function (b) {
       var on = b.getAttribute('data-dir') === dir;
       b.classList.toggle('active', on);
-      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     if (activeCur && rate) rate.value = dir === 'sell' ? activeCur.sell : activeCur.buy;
     if (totalEl) totalEl.classList.toggle('is-sell', dir === 'sell');
@@ -844,7 +853,7 @@
     form.querySelectorAll('.quick-dir').forEach(function (b) {
       var on = b.getAttribute('data-dir') === dir;
       b.classList.toggle('active', on);
-      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     if (activeCur) rate.value = dir === 'sell' ? activeCur.sell : activeCur.buy;
     recalc();
@@ -855,7 +864,7 @@
     form.querySelectorAll('.calc-mode-btn').forEach(function (b) {
       var on = b.getAttribute('data-mode') === mode;
       b.classList.toggle('active', on);
-      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     renderPresets();
     recalc();
@@ -1034,6 +1043,27 @@
     if (lc) lc.value = '1'; // explicit confirmation from the modal
     if (window.closeModal) window.closeModal('calcConfirmModal');
     if (form.requestSubmit) form.requestSubmit(); else form.submit();
+  });
+
+  /* Double-submit guard — one transaction per click. The modal confirm passes
+     through requestSubmit(), so this listener always runs before the POST. */
+  var calcSubmitted = false;
+  form.addEventListener('submit', function (e) {
+    if (calcSubmitted) { e.preventDefault(); return; }
+    calcSubmitted = true;
+    var cb = document.getElementById('calcCreate');
+    var calcBtn = document.getElementById('calcCalculate');
+    var sb = document.getElementById('calcConfirmSubmit');
+    if (cb) {
+      cb.disabled = true;
+      var saving = cb.getAttribute('data-saving');
+      if (saving) {
+        var lbl = cb.querySelector('span');
+        if (lbl) lbl.textContent = saving;
+      }
+    }
+    if (calcBtn) calcBtn.disabled = true;
+    if (sb) sb.disabled = true;
   });
 
   /* ---- init ---- */

@@ -6,7 +6,7 @@
 
 <div class="card" style="max-width:640px">
     <div class="card-body">
-        <form method="post" action="/income">
+        <form method="post" action="/income" data-submit-guard>
             <?= Csrf::field() ?>
             <div class="form-grid">
                 <div class="form-group">

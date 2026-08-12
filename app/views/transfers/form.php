@@ -10,7 +10,7 @@
             <svg class="icon"><use href="/assets/img/icons.svg#info"/></svg>
             <span><?= t('transfer.hint') ?></span>
         </div>
-        <form method="post" action="/transfers">
+        <form method="post" action="/transfers" data-submit-guard>
             <?= Csrf::field() ?>
             <div class="form-grid">
                 <div class="form-group">

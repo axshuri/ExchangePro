@@ -32,7 +32,7 @@ if ($maxQty <= 0) $maxQty = 1;
 <!-- Hero -->
 <div class="hero-band">
     <div class="hero-eyebrow"><?= t('app.dashboard') ?> · <?= e(localizedDate($today)) ?></div>
-    <div class="hero-title"><?= t('app.welcome_back') ?>, <?= e($user['full_name'] ?? '') ?></div>
+    <h1 class="hero-title"><?= t('app.welcome_back') ?>, <?= e($user['full_name'] ?? '') ?></h1>
     <div class="hero-value"><?= money((string)$bs['asset_total'], $base) ?></div>
     <div class="hero-meta">
         <?= t('dashboard.total_assets') ?> (<?= e($base['code']) ?>) ·

@@ -59,6 +59,7 @@ $nav = [
         ['href' => '/roles', 'icon' => 'shield', 'label' => t('role.roles')],
         ['href' => '/settings/business', 'icon' => 'settings', 'label' => t('settings.business')],
         ['href' => '/settings/backup', 'icon' => 'database', 'label' => t('settings.backup')],
+        ['href' => '/settings/data', 'icon' => 'download', 'label' => t('data.transfer')],
     ]],
     ['section' => t('app.audit'), 'items' => [
         ['href' => '/audit', 'icon' => 'file-text', 'label' => t('audit.title')],
@@ -150,7 +151,7 @@ window.EXCHANGE = { base: <?= json_encode($base ? $base['code'] : '') ?> };
                 <svg class="icon"><use href="/assets/img/icons.svg#menu"/></svg>
             </button>
             <div class="topbar-title">
-                <h1><?= e($title ?? t('app.dashboard')) ?></h1>
+                <div class="topbar-title-text"><?= e($title ?? t('app.dashboard')) ?></div>
                 <small><?= e(localizedDate()) ?></small>
             </div>
             <div class="topbar-credit" title="<?= e(t('app.built_by')) ?>">
@@ -161,13 +162,13 @@ window.EXCHANGE = { base: <?= json_encode($base ? $base['code'] : '') ?> };
                 <form class="global-search" method="get" action="/transactions" role="search">
                     <svg class="icon search-icon"><use href="/assets/img/icons.svg#search"/></svg>
                     <input type="text" name="q" id="globalSearch" placeholder="<?= t('app.search') ?>…" aria-label="<?= t('app.search') ?>">
-                    <kbd>Ctrl K</kbd>
+                    <kbd translate="no">Ctrl K</kbd>
                 </form>
                 <a href="/currencies" class="chip chip-base" title="<?= t('currency.is_base') ?>">
                     <?= e($base ? $base['code'] : '') ?>
                 </a>
-                <a href="/" class="icon-btn" title="<?= t('app.notifications') ?>">
-                    <svg class="icon"><use href="/assets/img/icons.svg#bell"/></svg>
+                <a href="/" class="icon-btn" title="<?= t('app.notifications') ?>" aria-label="<?= t('app.notifications') ?>">
+                    <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#bell"/></svg>
                     <?php if ($unread > 0): ?><span class="badge"><?= $unread ?></span><?php endif; ?>
                 </a>
                 <label class="lang-switch" title="<?= e(t('app.language')) ?>">
@@ -191,7 +192,7 @@ window.EXCHANGE = { base: <?= json_encode($base ? $base['code'] : '') ?> };
                 <?php foreach ($flash as $f): ?>
                     <div class="flash flash-<?= e($f['type']) ?>">
                         <?= e($f['message']) ?>
-                        <button class="flash-close" onclick="this.parentElement.remove()" aria-label="Close">&times;</button>
+                        <button class="flash-close" onclick="this.parentElement.remove()" aria-label="<?= t('app.close') ?>">&times;</button>
                     </div>
                 <?php endforeach; ?>
             </div>

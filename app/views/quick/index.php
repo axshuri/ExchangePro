@@ -14,21 +14,21 @@ $threshold = SettingService::largeTxThreshold();
 
 <div class="card quick-card" style="max-width:920px">
     <div class="card-body">
-        <form method="post" action="/quick" id="quickForm"
+        <form method="post" action="/quick" id="quickForm" data-submit-guard
               data-large-threshold="<?= e($threshold) ?>"
               data-base-code="<?= e($base['code']) ?>">
             <?= Csrf::field() ?>
             <input type="hidden" name="direction" id="quickDirection" value="<?= e($default_direction) ?>">
             <input type="hidden" name="large_confirmed" id="quickLargeConfirmed" value="0">
 
-            <div class="quick-direction" role="tablist" aria-label="<?= t('quick.direction') ?>">
+            <div class="quick-direction" role="group" aria-label="<?= t('quick.direction') ?>">
                 <button type="button" class="quick-dir quick-buy <?= $default_direction === 'buy' ? 'active' : '' ?>"
-                        data-dir="buy" role="tab" aria-selected="<?= $default_direction === 'buy' ? 'true' : 'false' ?>">
+                        data-dir="buy" aria-pressed="<?= $default_direction === 'buy' ? 'true' : 'false' ?>">
                     <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-down-circle"/></svg>
                     <?= t('tx.buy') ?>
                 </button>
                 <button type="button" class="quick-dir quick-sell <?= $default_direction === 'sell' ? 'active' : '' ?>"
-                        data-dir="sell" role="tab" aria-selected="<?= $default_direction === 'sell' ? 'true' : 'false' ?>">
+                        data-dir="sell" aria-pressed="<?= $default_direction === 'sell' ? 'true' : 'false' ?>">
                     <svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#arrow-up-circle"/></svg>
                     <?= t('tx.sell') ?>
                 </button>

@@ -10,7 +10,7 @@ foreach ($denominations as $d) { $denomsByCur[$d['currency_id']][] = $d; }
 
 <div class="card" style="max-width:860px">
     <div class="card-body">
-        <form method="post" action="/cash-count">
+        <form method="post" action="/cash-count" data-submit-guard>
             <?= Csrf::field() ?>
             <div class="form-grid">
                 <div class="form-group">
