@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="440" viewBox="0 0 1200 440"
+     role="img" aria-labelledby="title desc">
+  <title id="title">ExchangePro — self-hosted currency exchange management and accounting</title>
+  <desc id="desc">ExchangePro lets a bureau de change run the whole counter from one system: live buy and sell rates, exchange transactions, inventory, customers, and double-entry books with daily closing.</desc>
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="0.55" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#172554"/>
+    </linearGradient>
+    <linearGradient id="proGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="440" rx="26" fill="url(#bgGrad)"/>
+  <circle cx="1050" cy="60" r="210" fill="rgba(255,255,255,.05)"/>
+  <circle cx="150" cy="430" r="150" fill="rgba(255,255,255,.04)"/>
+
+  <!-- ======================= Title zone ======================= -->
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <text x="56" y="92" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+          font-size="20" font-weight="600" letter-spacing="3" fill="#93c5fd">CURRENCY EXCHANGE · ACCOUNTING</text>
+
+    <text x="56" y="176" font-size="84" font-weight="800" letter-spacing="-1.5" fill="#ffffff">
+      <tspan>Exchange</tspan><tspan fill="url(#proGrad)">Pro</tspan>
+    </text>
+
+    <text x="56" y="240" font-size="22" fill="#cbd5e1">One self-hosted system for the whole counter —</text>
+    <text x="56" y="274" font-size="22" fill="#cbd5e1">rates, transactions, inventory, customers,</text>
+    <text x="56" y="308" font-size="22" fill="#cbd5e1">and books that close every day.</text>
+  </g>
+
+  <!-- Feature chips -->
+  <g font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <rect x="56" y="322" width="186" height="42" rx="21" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.16)"/>
+    <text x="72" y="347" font-size="15" font-weight="500" fill="#e7ebf3">PHP 8.1+ · MySQL</text>
+
+    <rect x="254" y="322" width="176" height="42" rx="21" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.16)"/>
+    <text x="272" y="347" font-size="15" font-weight="500" fill="#e7ebf3">English · فارسی</text>
+
+    <rect x="442" y="322" width="162" height="42" rx="21" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.16)"/>
+    <text x="458" y="347" font-size="15" font-weight="500" fill="#e7ebf3">Live ECB rates</text>
+
+    <text x="56" y="398" font-size="18" fill="#67718a">v1.0.0 · base CAD · America/Toronto</text>
+  </g>
+
+  <!-- ======================= Dashboard rendering ======================= -->
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <!-- Window -->
+    <rect x="656" y="64" width="488" height="324" rx="20" fill="#141926" stroke="#232a3a" stroke-width="1.5"/>
+    <!-- Top bar -->
+    <rect x="656" y="64" width="488" height="34" rx="18" fill="#10141d"/>
+    <rect x="656" y="90" width="488" height="8" fill="#10141d"/>
+    <line x1="656" y1="98" x2="1144" y2="98" stroke="#232a3a" stroke-width="1"/>
+    <circle cx="678" cy="82" r="3.5" fill="#f87171"/>
+    <circle cx="692" cy="82" r="3.5" fill="#fbbf24"/>
+    <circle cx="706" cy="82" r="3.5" fill="#34d399"/>
+    <text x="724" y="88" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="15" fill="#98a2b3">Dashboard</text>
+    <rect x="1032" y="72" width="104" height="20" rx="10" fill="#0f141f" stroke="#232a3a"/>
+    <text x="1084" y="86" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="13" fill="#67718a">Ctrl K</text>
+
+    <!-- Sidebar -->
+    <rect x="656" y="98" width="92" height="290" fill="#0d1220"/>
+    <line x1="748" y1="98" x2="748" y2="388" stroke="#232a3a" stroke-width="1"/>
+    <rect x="672" y="112" width="56" height="36" rx="8" fill="url(#proGrad)"/>
+    <text x="700" y="136" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff">EX</text>
+    <rect x="672" y="168" width="60" height="7" rx="3.5" fill="#232a3a"/>
+    <rect x="672" y="186" width="60" height="7" rx="3.5" fill="#3b82f6"/>
+    <rect x="672" y="204" width="60" height="7" rx="3.5" fill="#232a3a"/>
+    <rect x="672" y="222" width="60" height="7" rx="3.5" fill="#232a3a"/>
+    <rect x="672" y="240" width="60" height="7" rx="3.5" fill="#232a3a"/>
+    <text x="672" y="270" font-size="11" fill="#67718a">RATES</text>
+    <rect x="672" y="282" width="60" height="7" rx="3.5" fill="#232a3a"/>
+    <rect x="672" y="300" width="60" height="7" rx="3.5" fill="#232a3a"/>
+    <rect x="672" y="318" width="60" height="7" rx="3.5" fill="#232a3a"/>
+    <circle cx="702" cy="354" r="13" fill="#2563eb"/>
+    <text x="702" y="360" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">S</text>
+    <rect x="724" y="346" width="14" height="5" rx="2.5" fill="#232a3a"/>
+    <rect x="724" y="356" width="14" height="4" rx="2" fill="#232a3a"/>
+
+    <!-- Hero band -->
+    <rect x="760" y="110" width="372" height="64" rx="12" fill="url(#heroGrad)"/>
+    <text x="780" y="132" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="13" fill="#dbeafe">TODAY · AUG 12</text>
+    <text x="780" y="150" font-size="13" fill="#dbeafe">Total assets (CAD)</text>
+    <text x="780" y="168" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="22" font-weight="700" fill="#ffffff">1,284,506.42</text>
+    <rect x="1028" y="132" width="44" height="22" rx="6" fill="rgba(255,255,255,.16)"/>
+    <text x="1050" y="147" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="12" fill="#ffffff">CSV</text>
+
+    <!-- KPI cards -->
+    <rect x="760" y="186" width="180" height="62" rx="10" fill="#141926" stroke="#232a3a"/>
+    <text x="780" y="208" font-size="12.5" font-weight="600" fill="#8f9bb3">TODAY'S PROFIT</text>
+    <text x="780" y="236" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#34d399">+842.10</text>
+    <text x="924" y="236" text-anchor="end" font-size="13" fill="#34d399">▲ 12.4%</text>
+
+    <rect x="952" y="186" width="180" height="62" rx="10" fill="#141926" stroke="#232a3a"/>
+    <text x="972" y="208" font-size="12.5" font-weight="600" fill="#8f9bb3">TODAY'S VOLUME</text>
+    <text x="972" y="236" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="19" font-weight="700" fill="#93c5fd">24,310.00</text>
+    <text x="1116" y="236" text-anchor="end" font-size="13" fill="#93c5fd">▲ 6.1%</text>
+
+    <!-- Rate board -->
+    <rect x="760" y="260" width="184" height="116" rx="10" fill="#141926" stroke="#232a3a"/>
+    <text x="780" y="282" font-size="12.5" font-weight="600" fill="#8f9bb3">RATE BOARD</text>
+    <rect x="876" y="270" width="40" height="18" rx="9" fill="#12291f" stroke="rgba(52,211,153,.35)"/>
+    <text x="896" y="283" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="11" fill="#34d399">ECB</text>
+    <line x1="780" y1="294" x2="924" y2="294" stroke="#232a3a"/>
+    <text x="780" y="310" font-size="11.5" fill="#67718a">CUR</text>
+    <text x="884" y="310" text-anchor="end" font-size="11.5" fill="#67718a">BUY</text>
+    <text x="924" y="310" text-anchor="end" font-size="11.5" fill="#67718a">SELL</text>
+    <g font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace">
+      <text x="780" y="330" font-size="15" font-weight="700" fill="#e7ebf3">USD</text>
+      <text x="884" y="330" text-anchor="end" font-size="17" fill="#e7ebf3">1.3682</text>
+      <text x="924" y="330" text-anchor="end" font-size="17" fill="#e7ebf3">1.3721</text>
+      <text x="780" y="350" font-size="15" font-weight="700" fill="#e7ebf3">EUR</text>
+      <text x="884" y="350" text-anchor="end" font-size="17" fill="#e7ebf3">1.1120</text>
+      <text x="924" y="350" text-anchor="end" font-size="17" fill="#e7ebf3">1.1185</text>
+      <text x="780" y="370" font-size="15" font-weight="700" fill="#e7ebf3">GBP</text>
+      <text x="884" y="370" text-anchor="end" font-size="17" fill="#e7ebf3">1.2845</text>
+      <text x="924" y="370" text-anchor="end" font-size="17" fill="#e7ebf3">1.2910</text>
+    </g>
+
+    <!-- Recent transactions -->
+    <rect x="952" y="260" width="176" height="116" rx="10" fill="#141926" stroke="#232a3a"/>
+    <text x="972" y="282" font-size="12.5" font-weight="600" fill="#8f9bb3">RECENT TX</text>
+    <line x1="972" y1="294" x2="1108" y2="294" stroke="#232a3a"/>
+    <text x="972" y="314" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="12" fill="#cbd5e1">EX-…000042</text>
+    <rect x="1088" y="303" width="32" height="20" rx="10" fill="#12291f" stroke="rgba(52,211,153,.4)"/>
+    <text x="1104" y="317" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="11" fill="#34d399">BUY</text>
+    <text x="972" y="340" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="12" fill="#cbd5e1">EX-…000041</text>
+    <rect x="1088" y="329" width="32" height="20" rx="10" fill="#2b1518" stroke="rgba(248,113,113,.4)"/>
+    <text x="1104" y="343" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="11" fill="#f87171">SELL</text>
+  </g>
+</svg>

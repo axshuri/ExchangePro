@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="500" viewBox="0 0 1200 500"
+     role="img" aria-labelledby="title desc">
+  <title id="title">How ExchangePro works — from counter to closed books</title>
+  <desc id="desc">A currency exchange transaction is entered at the counter, priced against the live or manual rate, posted to the double-entry ledger, reflected in inventory and customer balances, then reconciled at daily closing and summarized in reports.</desc>
+
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="0.55" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#172554"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="500" rx="26" fill="url(#bgGrad)"/>
+  <circle cx="1050" cy="40" r="190" fill="rgba(255,255,255,.05)"/>
+  <circle cx="120" cy="480" r="150" fill="rgba(255,255,255,.04)"/>
+
+  <!-- Heading -->
+  <text x="56" y="72" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        font-size="18" font-weight="600" letter-spacing="3" fill="#93c5fd">HOW MONEY MOVES</text>
+  <text x="56" y="116" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="40" font-weight="700" letter-spacing="-0.5" fill="#ffffff">From counter to closed books</text>
+
+  <!-- ====================== Row 1 ====================== -->
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <!-- 01 Counter -->
+    <rect x="56" y="148" width="320" height="132" rx="14" fill="#141926" stroke="#232a3a"/>
+    <text x="78" y="180" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="22" font-weight="600" fill="#93c5fd">01</text>
+    <text x="78" y="212" font-size="24" font-weight="700" fill="#e7ebf3">Counter</text>
+    <line x1="78" y1="228" x2="354" y2="228" stroke="#232a3a"/>
+    <text x="78" y="252" font-size="18" fill="#cbd5e1">Buy · Sell · Exchange</text>
+    <text x="78" y="276" font-size="18" fill="#8f9bb3">Quick keyboard-first entry</text>
+
+    <!-- 02 Rates -->
+    <rect x="440" y="148" width="320" height="132" rx="14" fill="#141926" stroke="#232a3a"/>
+    <text x="462" y="180" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="22" font-weight="600" fill="#93c5fd">02</text>
+    <text x="462" y="212" font-size="24" font-weight="700" fill="#e7ebf3">Rates</text>
+    <line x1="462" y1="228" x2="738" y2="228" stroke="#232a3a"/>
+    <text x="462" y="252" font-size="18" fill="#cbd5e1">Live ECB reference sync</text>
+    <text x="462" y="276" font-size="18" fill="#8f9bb3">Buy/sell spreads, your call</text>
+
+    <!-- 03 Ledger -->
+    <rect x="824" y="148" width="320" height="132" rx="14" fill="#141926" stroke="#232a3a"/>
+    <text x="846" y="180" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="22" font-weight="600" fill="#93c5fd">03</text>
+    <text x="846" y="212" font-size="24" font-weight="700" fill="#e7ebf3">Ledger</text>
+    <line x1="846" y1="228" x2="1122" y2="228" stroke="#232a3a"/>
+    <text x="846" y="252" font-size="18" fill="#cbd5e1">Double-entry journal</text>
+    <text x="846" y="276" font-size="18" fill="#8f9bb3">Every movement posted once</text>
+
+    <!-- Row 1 arrows -->
+    <g font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="30" fill="#3b82f6" text-anchor="middle">
+      <text x="408" y="222">→</text>
+      <text x="792" y="222">→</text>
+    </g>
+  </g>
+
+  <!-- Wrap arrow: card 03 down to card 04 -->
+  <g stroke="#3b82f6" stroke-width="4" stroke-linecap="round" fill="none">
+    <line x1="984" y1="288" x2="984" y2="330"/>
+    <path d="M984 336 l-9 -14 h18 z" fill="#3b82f6" stroke="none"/>
+  </g>
+
+  <!-- ====================== Row 2 (reads right to left) ====================== -->
+  <g font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <!-- 04 Positions -->
+    <rect x="824" y="340" width="320" height="132" rx="14" fill="#141926" stroke="#232a3a"/>
+    <text x="846" y="372" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="22" font-weight="600" fill="#93c5fd">04</text>
+    <text x="846" y="404" font-size="24" font-weight="700" fill="#e7ebf3">Positions</text>
+    <line x1="846" y1="420" x2="1122" y2="420" stroke="#232a3a"/>
+    <text x="846" y="444" font-size="18" fill="#cbd5e1">Inventory &amp; accounts update</text>
+    <text x="846" y="468" font-size="18" fill="#8f9bb3">Customer balances, live</text>
+
+    <!-- 05 Closing -->
+    <rect x="440" y="340" width="320" height="132" rx="14" fill="#141926" stroke="#232a3a"/>
+    <text x="462" y="372" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="22" font-weight="600" fill="#93c5fd">05</text>
+    <text x="462" y="404" font-size="24" font-weight="700" fill="#e7ebf3">Closing</text>
+    <line x1="462" y1="420" x2="738" y2="420" stroke="#232a3a"/>
+    <text x="462" y="444" font-size="18" fill="#cbd5e1">Cash count &amp; reconcile</text>
+    <text x="462" y="468" font-size="18" fill="#8f9bb3">Daily closing locks the day</text>
+
+    <!-- 06 Reports -->
+    <rect x="56" y="340" width="320" height="132" rx="14" fill="#141926" stroke="#232a3a"/>
+    <text x="78" y="372" font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="22" font-weight="600" fill="#93c5fd">06</text>
+    <text x="78" y="404" font-size="24" font-weight="700" fill="#e7ebf3">Reports</text>
+    <line x1="78" y1="420" x2="354" y2="420" stroke="#232a3a"/>
+    <text x="78" y="444" font-size="18" fill="#cbd5e1">P&amp;L · balance sheet · cash flow</text>
+    <text x="78" y="468" font-size="18" fill="#8f9bb3">CSV exports &amp; audit trail</text>
+
+    <!-- Row 2 arrows (point left, following the serpentine) -->
+    <g font-family="'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace" font-size="30" fill="#3b82f6" text-anchor="middle">
+      <text x="792" y="414">←</text>
+      <text x="408" y="414">←</text>
+    </g>
+  </g>
+
+  <!-- Footer note -->
+  <text x="56" y="492" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        font-size="16" fill="#67718a">Every transaction is recorded once, priced at its stored rate, and never silently rewritten.</text>
+</svg>
